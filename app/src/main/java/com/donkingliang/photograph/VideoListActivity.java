@@ -83,7 +83,7 @@ public class VideoListActivity extends Activity {
     }
     public void refresh(View view) {
         Log.d("BUTTON", "refresh clicked");
-        Toast.makeText(VideoListActivity.this, "Refresh the data please wait."  , Toast.LENGTH_SHORT).show();
+        Toast.makeText(VideoListActivity.this, "Refresh data, please wait."  , Toast.LENGTH_SHORT).show();
         fetchData();
         Toast.makeText(VideoListActivity.this, "Refresh finished!"  , Toast.LENGTH_SHORT).show();
 

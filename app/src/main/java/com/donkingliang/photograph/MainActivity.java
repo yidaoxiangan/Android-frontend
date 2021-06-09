@@ -67,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
             case CAMERA_REQUEST_CODE:
                 break;
             case VIDEO_GALLERY_REQUEST_CODE:
+                if (data == null) {
+                    break;
+                }
                 String task_id = RemoteRequest.create_request();
                 if (!task_id.equals("")) {
                     Uri uri = data.getData();
@@ -74,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("BUTTON", "Get video from gallery, the file path is " + uri.getPath());
                     RemoteRequest.upload_request(uri, task_id, this);
                     Toast.makeText(this, "Video uploaded", Toast.LENGTH_SHORT).show();
+                } else {
+
                 }
                 break;
         }

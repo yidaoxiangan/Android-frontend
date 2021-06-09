@@ -8,12 +8,6 @@
     tools:context=".VideoListActivity">
 
     <!-- 定义一个用于显示头像的ImageView -->
-    <ImageView
-        android:id="@+id/video_thumbnail"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:baselineAlignBottom="true"
-        android:paddingLeft="8dp" />
 
     <!-- 定义一个竖直方向的LinearLayout,把QQ呢称与说说的文本框设置出来 -->
     <LinearLayout
@@ -26,15 +20,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="8dp"
-            android:textColor="#1D1D1C"
+            android:textColor="#FFFFFF"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/task_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
             android:paddingLeft="8px"
-            android:textColor="#B4B4B9"
+            android:textColor="#FFFFFF"
             android:textSize="14sp" />
 
         <TextView
@@ -42,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="8px"
-            android:textColor="#B4B4B9"
+            android:textColor="#FFFFFF"
             android:textSize="14sp" />
     </LinearLayout>
 

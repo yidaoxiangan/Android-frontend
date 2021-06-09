@@ -5,6 +5,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -12,20 +13,26 @@
         android:id="@+id/selectButton"
         android:layout_width="300dp"
         android:layout_height="100dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginLeft="50dp"
         android:layout_marginTop="200dp"
+        android:background="?android:attr/colorEdgeEffect"
+        android:gravity="center"
         android:onClick="chooseVideo"
-        android:text="选择视频并且上传" />
+        android:text="选择视频并且上传"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/videoListButton"
         android:layout_width="300dp"
         android:layout_height="100dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginLeft="50dp"
         android:layout_marginTop="30dp"
+        android:background="?android:attr/colorEdgeEffect"
+        android:gravity="center"
         android:onClick="onClickVideoList"
-        android:text="查看已上传视频" />
+        android:text="查看已上传视频"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
 </LinearLayout>
