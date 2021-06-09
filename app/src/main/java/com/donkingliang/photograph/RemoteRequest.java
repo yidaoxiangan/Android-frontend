@@ -49,8 +49,9 @@ public class RemoteRequest {
 
             SQLiteDatabase db = MainActivity.dbHelper.getWritableDatabase();
             ContentValues cv = new ContentValues();
+//            cv.put("id",null);
             cv.put("task_id", task_id);
-            cv.put("status", "create");
+            cv.put("status", "CREATED");
             db.insert("task", null, cv);
             db.close();
 
@@ -62,7 +63,6 @@ public class RemoteRequest {
         }
         return "";
     }
-
     public static String create_request() {
         try {
             Request request = new Request.Builder()
@@ -79,6 +79,40 @@ public class RemoteRequest {
         return "";
     }
 
+    public static void query_request(String task_id) {
+        try {
+            String query_url =RemoteURL.QUERY_URL + "?task_id=" + task_id;
+                    Request request = new Request.Builder()
+                    .url(query_url)
+                    .build();
+            Log.d("URL", query_url);
+            Response response = httpClient.newCall(request).execute();
+            String responseString = response.body().string();
+            Log.d("QUERY_REQUEST", responseString);
+            try {
+
+                JSONObject jsonObject = new JSONObject(responseString);
+
+                String success = jsonObject.optString("success");
+                String status = jsonObject.optString("status");
+
+                if (success.equals("success")) {
+                    SQLiteDatabase db = MainActivity.dbHelper.getWritableDatabase();
+                    ContentValues cv = new ContentValues();
+                    cv.put("status", status);
+                    db.update("task", cv, "task_id=?", new String[]{task_id});
+                    db.close();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
     public static void upload_request(Uri file_uri, String task_id, Context context) {
         File file = null;
 

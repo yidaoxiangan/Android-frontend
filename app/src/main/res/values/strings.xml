@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Photograph</string>
+    <string name="region_selected" />
 </resources>

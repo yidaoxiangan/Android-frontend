@@ -11,6 +11,8 @@ import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -69,15 +71,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ivCamera = findViewById(R.id.ivCamera);
-        ivPhoto = findViewById(R.id.ivPhoto);
-        send = findViewById(R.id.send);
-        ivCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkPermissionAndCamera();
-            }
-        });
+//        ivCamera = findViewById(R.id.ivCamera);
+//        ivPhoto = findViewById(R.id.ivPhoto);
+//        send = findViewById(R.id.send);
+//        ivCamera.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                checkPermissionAndCamera();
+//            }
+//        });
 
     }
 
@@ -232,6 +234,16 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select Video"), VIDEO_GALLERY_REQUEST_CODE);
     }
 
+    public void onClickVideoList(View view) {
+        Intent intent = new Intent(MainActivity.this, VideoListActivity.class);
+        intent.setClass(this, VideoListActivity.class);
+        startActivity(intent);
+
+
+    }
+
+
 }
+
 
 
