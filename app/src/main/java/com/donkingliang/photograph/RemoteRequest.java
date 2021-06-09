@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.FileUtils;
 import android.provider.OpenableColumns;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -111,6 +112,30 @@ public class RemoteRequest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+    }
+    public static void download_request(Context context, String task_id) {
+        String download_url = RemoteURL.DOWNLOAD_URL + "?task_id=" + task_id;
+
+        Log.d("DOWNLOAD", "download url is " + download_url);
+        DownloadUtil.get().download(context, download_url,new DownloadUtil.OnDownloadListener(){
+
+            @Override
+            public void onDownloadSuccess() {
+                Log.d("DOWNLOAD", "download success!");
+            }
+
+            @Override
+            public void onDownloading(int progress) {
+                Log.d("DOWNLOAD", "downloading! progress: " + String.valueOf(progress) + "%");
+            }
+
+            @Override
+            public void onDownloadFailed() {
+
+                Log.d("DOWNLOAD", "download failed!");
+            }
+        });
 
     }
     public static void upload_request(Uri file_uri, String task_id, Context context) {
