@@ -48,6 +48,6 @@
         android:layout_marginLeft="50dp"
         android:layout_marginTop="10dp"
         android:onClick="chooseVideo"
-        android:text="选择一个视频并上传" />
+        android:text="选择视频" />
 
 </LinearLayout>

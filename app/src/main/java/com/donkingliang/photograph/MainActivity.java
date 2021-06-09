@@ -8,12 +8,8 @@ import androidx.core.content.FileProvider;
 import androidx.core.os.EnvironmentCompat;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -34,11 +30,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import okhttp3.Headers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
 public class MainActivity extends AppCompatActivity {
 
     private ImageView ivCamera;
@@ -52,9 +43,11 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 用于保存拍照图片的uri
-      */
+     */
     private static final int VIDEO_GALLERY_REQUEST_CODE = 0x00000013;
     private Uri mCameraUri;
+
+    public static DatabaseHelper dbHelper;
 
 
     /**
@@ -68,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        dbHelper = new DatabaseHelper(MainActivity.this, "test_db", null, 1);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
@@ -77,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         ivCamera = findViewById(R.id.ivCamera);
         ivPhoto = findViewById(R.id.ivPhoto);
-        send=findViewById(R.id.send);
+        send = findViewById(R.id.send);
         ivCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             openCamera();
         } else {
             //没有权限，申请权限。
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
                     PERMISSION_CAMERA_REQUEST_CODE);
         }
     }
@@ -107,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             case CAMERA_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     if (isAndroidQ) {
@@ -118,15 +112,18 @@ public class MainActivity extends AppCompatActivity {
                         ivPhoto.setImageBitmap(BitmapFactory.decodeFile(mCameraImagePath));
                     }
                 } else {
-                    Toast.makeText(this,"取消",Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "取消", Toast.LENGTH_LONG).show();
                 }
                 break;
             case VIDEO_GALLERY_REQUEST_CODE:
-//                Uri uri = data.getData();
-//                Toast.makeText(this, "文件路径："+uri.getPath().toString(), Toast.LENGTH_SHORT).show();
-//                Log.d("BUTTON","Get video from gallery, the file path is " + uri.getPath());
-                RemoteRequest.create_request();
-               break;
+                String task_id = RemoteRequest.create_request();
+                if (!task_id.equals("")) {
+                    Uri uri = data.getData();
+                    Toast.makeText(this, "文件路径：" + uri.getPath().toString(), Toast.LENGTH_SHORT).show();
+                    Log.d("BUTTON", "Get video from gallery, the file path is " + uri.getPath());
+                    RemoteRequest.upload_request(uri, task_id, this);
+                }
+                break;
         }
     }
 
@@ -147,13 +144,13 @@ public class MainActivity extends AppCompatActivity {
                 openCamera();
             } else {
                 //拒绝权限，弹出提示框。
-                Toast.makeText(this,"拍照权限被拒绝",Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "拍照权限被拒绝", Toast.LENGTH_LONG).show();
             }
         }
     }
 
     /**
-     拍照
+     * 拍照
      */
     private void openCamera() {
         Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -201,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         String status = Environment.getExternalStorageState();
         // 判断是否有SD卡,优先使用SD卡存储,当没有SD卡时使用手机存储
         if (status.equals(Environment.MEDIA_MOUNTED)) {
-           return getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
+            return getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
         } else {
             return getContentResolver().insert(MediaStore.Images.Media.INTERNAL_CONTENT_URI, new ContentValues());
         }
@@ -209,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 创建保存图片的文件
+     *
      * @return
      * @throws IOException
      */
@@ -231,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
 //        intent.setType("*/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        startActivityForResult(Intent.createChooser(intent,"Select Video"),VIDEO_GALLERY_REQUEST_CODE);
+        startActivityForResult(Intent.createChooser(intent, "Select Video"), VIDEO_GALLERY_REQUEST_CODE);
     }
 
 }
